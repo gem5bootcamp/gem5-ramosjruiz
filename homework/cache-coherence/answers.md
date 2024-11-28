@@ -54,11 +54,58 @@ Question 4
 
 (b) How does this compare to what you saw on the real system?
 
+Answer 4
+
+# Naive
+| Core Count | Average Time (ms) |  
+|------------|--------------------|  
+| 1          | 0.838           |  
+| 2          | 0.779           |  
+| 4          | 0.818           |  
+| 8          | 0.881           |  
+| 16         | 0.917           | 
+
+# All
+| Core Count | Average Time (ms) |  
+|------------|--------------------|  
+| 1          | 0.839           |  
+| 2          | 0.438           |  
+| 4          | 0.236           |  
+| 8          | 0.142           |  
+| 16         | 0.111           |
+ 
+(a) Speedup of Algorithm 1 (Naive) on 16 cores: 0.914. Speedup of Algorithm 6 (All) on 16 cores: 7.56
+
+(b) The speedup from gem5 is 0.914, while the real system shows a speedup of 0.897. This suggests that gem5's estimated performance is quite close to the real system's performance. For Algorithm 6, the speedup in gem5 is much higher (7.56), while the real system shows a speedup of only 0.975.
+
 Question 5
 
 Which optimization (chunking the array, using different result addresses, or putting padding between the result addresses) has the biggest impact on the hit ratio?
 
 Show the data you use to make this determination. Discuss which algorithms you are comparing and why.
+
+Answer 5
+
+Refer to data/gem5-mesi
+
+| Algorithm    | L1 Hit Ratio % | L2 Hit Ratio % | 
+|--------------|--------------------|------------|
+| 1- Naive     | 0.839           |  |
+| 2- Chunk     | 0.438           |  |
+| 3- Race      | 0.236           |  |
+| 4- Chunk Race| 0.142           |  |
+| 5- Block     | 50           | 50             |
+| 6- All       | 99.32           | 69.5 |
+
+Algorithm	L1 Hit Ratio	L2 Hit Ratio
+All	99.32%	69.5%
+Block	50%	50%
+Chunk	93.6%	69.4%
+Chunk-Race	94.1%	56.5%
+Naive	87.8%	90.3%
+Race	88.3%	62.0%
+
+The chunking strategy does not seem to have a significant impact, since algorithm 2 has a similar performance to algorithm 1 and algorithm 4 which combines algorithm 3 wiht chunking, performs similar to algorithm 3. The padding optimization (algorithm 5) has the biggest impact on the hit ratio, as evidenced by the significant drop in execution time at higher core counts (0.145ms at 16 cores). The 6th algorithm (a combination of all optimizations) shows just a slightly better performance compared to just padding (best performance 0.111ms).
 
 Question 6
 
@@ -66,11 +113,17 @@ Which optimization (chunking the array, using different result addresses, or put
 
 Show the data you use to make this determination. Discuss which algorithms you are comparing and why.
 
+Answer 6
+
+
 Question 7
 
 Which optimization (chunking the array, using different result addresses, or putting padding between the result addresses) has the biggest impact on the write sharing?
 
 Show the data you use to make this determination. Discuss which algorithms you are comparing and why.
+
+Answer 7
+
 
 Question 8
 
@@ -82,6 +135,9 @@ Finally, you should have an idea of what optimizations have the biggest impact o
 
 So: (b) Using data from the gem5 simulations, now answer what hardware characteristic causes the most important optimization to be the most important.
 
+Answer 8
+
+
 Question 9
 
 Run using a xbar_latency of 1 cycle and 25 cycles (in addition to the 10 cycles that you have already run).
@@ -89,3 +145,7 @@ Run using a xbar_latency of 1 cycle and 25 cycles (in addition to the 10 cycles 
 As you increase the cache-to-cache latency, how does it affect the importance of the different optimizations?
 
 You don't have to run all algorithms. You can probably get away with just running algorithm 1 and algorithm 6.
+
+Answer 9
+
+
