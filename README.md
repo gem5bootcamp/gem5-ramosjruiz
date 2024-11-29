@@ -1,2 +1,1 @@
-# blank
-This is a blank repo
+Submission for Juan Pablo Ramos Ruiz | ramosjruiz@gmail.com
