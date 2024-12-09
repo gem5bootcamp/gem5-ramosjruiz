@@ -55,8 +55,15 @@ Next, we tried reducing the available memory channels and ran the same tests. In
 
 ### How does changing the cache configuration affect performance? Discuss the trade-offs observed between your three-level cache and the alternative cache.
 
-We tried changing the Replacement Policy in the 3-level cache to Least Recently Used to see if the nature of the workload would prove LRU to be a better replacement policy in some of them, but worse in others. However the results were a decrease in performance in every workload, for both configurations Big and Little.
+![](data/design-space-exploration/lru/ipc.png)
+![](data/design-space-exploration/lru/seconds.png)
+
+We tried changing the Replacement Policy in the 3-level cache to Least Recently Used to see if the nature of the workload would prove LRU to be a better replacement policy in some of them, but worse in others. However the results were a decrease in performance in every workload, for both configurations Big and Little. The Big configuration still outperformed the Little configuration in every workload but the modification in replacement policy made all simulations slower and decreased the ammount of instructions executed per cycle. This shows that eviction of values that would later be used forced the system to go to the main memory, reducing the available cores to be used in computing values.
 
 ## Insights and Conclusions:
 
 ### Summarize your findings. What architectural choices led to the best performance? What recommendations would you make for future designs?
+
+In these experiments, the optimization of the cache proved to be the best performance enhancer either by making it larger and allowing more lines to be stored, or by selecting the appropiate replacement policy to make the data stored relevant. Even though having more channels available for the main memory proved to be better, the results indicated that the delta in performance was not as big as changes made in the cache.
+
+The findings allow us to assert that building a system with efficient use of the cache coherence protocols, giving the cache different levels and enough space to store relevant data is critical for performance. It is important to note, that when building a real-life system we should take into account the cost of building a complex, if efficient, cache system. For future designs, we would advise to build a cache hierarchy with sufficient resources for the task at hand, yet monitoring the decreasing gains in performance as we dump more and more resources on the cache.
