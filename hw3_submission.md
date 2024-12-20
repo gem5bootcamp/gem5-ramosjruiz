@@ -12,4 +12,8 @@ Lastly, I would like to see how well the secure memory with cache handles multip
 
 C) Run some applications (getting started suite works, or matrix multiply) using the baseline and discuss the impact that you believe the secure memory changes will have.
 
+With the X86 OOO setup there were no blocked cycles in the cache, I believe that would have not been the case with multiple cores accessing the Secure Memory, although the Metadata Cache could have guaranteed no blockage. I'm positive the number of ticks simulated, together with the memory used and the operations would have kept constant, since there would be no overhead that might affect those variables However I do think that the simulated seconds would have shot up considering the first part of the simulation the cache would be completely empty and all packets would have to traverse the Merkle Tree.
 
+The hit ratio of the cache could be lower, since the secure memory implementation would have a single level cache and the baseline was a two level cache. Less space means repeated evictions and thus, more encrypting and decrypting packets which would in turn affect simulated time.
+
+I don't think stats would have been affected at core processor level, although if the scenario previously mentioned where multiple cores were computing with uncached packets, contention could occur and the ammount of instructions commited each cycle could go down significantly.
